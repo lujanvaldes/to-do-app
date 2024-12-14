@@ -1,11 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="keywords" content="to do list, productivity, lista, to do" />
+    <meta name="author" content="Luján Valdés" />
+    <title>To do - App</title>
+
+
+
+    <style>
+        /*background: fdf0d5*/
+        /*footer: 003049*/
+        /*tipografía: 780000*/
+        /*extra1: 669bbc*/
+        /*extra2: c1121f*/
+
+
+        /*estilos de base*/
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #780000;
+        }
+
+        .Body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background-color: #fdf0d5;
+        }
+
+        .Main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .H1 {
+            display: flex;
+            justify-content: center;
+            font-size: 1rem;
+            margin-top: 2rem;
+        }
+
+        /*estilos de lista*/
+        .Lista {
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            font-size: 1rem;
+            margin: 1rem;
+            gap: 1rem;
+        }
+
+
+
+    </style>
 </head>
-<body>
-    
+
+<body class="Body">
+    <main class="Main">
+
+        <h1 class="H1">To do List</h1>
+
+        <div class="Lista">
+            <ul id="Lista-tareas">
+                <li>Ingrese tareas en su lista</li>
+            </ul>
+        </div>
+
+        <form id="formTarea">
+            <input id="txtTarea" type="text" name="" placeholder="Ingrese una tarea">
+            <button type="submit">Agregar Tarea</button>
+        </form>
+    </main>
+
+    <menu class="Tabs">
+
+
+    </menu>
+
+    <script>
+
+        //recomendado para el proyecto: segmentarlo correctamente
+        // _________________________________________________________ //
+        //  0. Comentarios y documentación
+        //  (si se quiere describir todo lo que va a hacer el js)    //
+        // _________________________________________________________ //
+
+        /*
+        Vamos a realizar un ToDo list para practicar el uso de objetos y arrrays
+        ej de uso:
+        link a manual
+        autor
+        */
+
+        // _________________________________________________________ //
+        //  1. Constantes y Variables                                //
+        // _________________________________________________________ //
+        //guardan informacion y hacen referencia a partes del html//
+
+        //constantes (que nunca van a cambiar)
+        const formu = document.getElementById("formTarea");
+        const txtTarea = document.getElementById("txtTarea");
+        const boxTareas = document.getElementById("Lista-tareas");
+
+        //variables (los que si cambian) (al ser un array va entre corchetes)
+        //const listaDeTareas = ["Ordenar el código JS", "Crear las funciones", "Probar el programa"];
+
+        /*      const tarea = {
+                           id: 1,//identificador unico para cuando hay muchas personas que tienen indices 0, 1, 2... hay que diferenciarlos de otra manera
+                           titulo: "Ordenar el código de JS",
+                           //isImportant: true,
+                           isCompletada: true,
+               
+                       }*/
+
+        let listaDeTareas = [
+            { id: 1, titulo: "Ordenar el código de JS", isCompletada: true },
+            { id: 524, titulo: "Crear las Funciones", isCompletada: false },
+            { id: 1056, titulo: "Probar el programa", isCompletada: false }
+        ];
+
+
+        // ___________________________________________________________ //
+        // 2. Funciones utilitarias (reutilizables)                    //
+        // * esto también se suele hacer en un archivo aparte: utils.js//
+        // ___________________________________________________________ //
+
+
+        // _________________________________________________________ //
+        //                                                           //
+        //  3. Funciones principales de nuestra web/programa/app     //
+        // _________________________________________________________ //
+
+        function mostrarTareas() {
+            //borrar todo el contenido de la caja antes de mostrar
+            boxTareas.innerHTML = ""; //borro los elementos
+
+            //lista de cosas ---->(cosa)
+            listaDeTareas.forEach((tarea) => {
+                console.log("Tarea es: ", tarea);
+                const titulo = tarea.titulo;
+                const id = tarea.id;
+
+                //convertir esta linea para que isChecked sea igual a "checked" o a nada
+                const isChecked = tarea.isCompletada ? "checked" : ""; //if ternario, si es true, es = a la primera, sino, lo segundo
+
+
+
+                //boxTareas.innerHTML += `<li>${titulo}</li>`;
+                boxTareas.innerHTML += `
+                <li>
+                    <input type="checkbox" id="${id}"name= "chk_completada" ${isChecked}/>
+                    <label for="${id}">${titulo}(${id})</label>
+                    <button onclick="eliminarTarea(${id})">X</button>
+                    <button onclick="completarTarea(${id})">Completar</button>
+                </li>`;
+            });
+        }
+
+        function agregarTarea() {
+            const nuevaTarea = txtTarea.value.trim();//el texto del input
+
+            //tarea invalida (hacemos un return)
+            if (nuevaTarea == "") {
+                alert("Por favor, ingresar una tarea válida");
+                return;
+            }
+
+            // tarea válida
+            txtTarea.value = "";//limpiar el imput
+            // listaDeTareas.push(nuevaTarea); //este método push() empuja el nuevo elemento al final de la lista.
+
+            //simulamos un id nuevo entre 0 y 99
+            const nuevoID = parseInt(Math.random() * 100);
+
+            const objetoTarea = { id: nuevoID, titulo: nuevaTarea, isCompletada: false }; // se lo agrega en una variable, y luego hacer el push de la misma
+            console.log("Nueva tarea a agregar es: ", objetoTarea);
+
+            listaDeTareas.push(objetoTarea);
+
+            mostrarTareas();
+        }
+
+        function eliminarTarea(idTarea) {
+            alert("Eliminar tarea: " + idTarea);
+            //modificar mi lista, y eliminar la tarea idTarea
+
+            // 1. metodo utilizando forEach y splice
+            // listaDeTareas.forEach((tarea, index)=>{
+            //     if(tarea.id == idTarea) {
+            //         listaDeTareas.splice(index, 1);
+            //     }
+            // });
+
+
+            //2. método utilizando findIndex
+            //busca una tarea donde se esta buscando, y devuelve la posicion en la que esta en la lista.
+            // const posicion = listaDeTareas.findIndex(tarea => tarea.id == idTarea);
+            // listaDeTareas.splice(posicion, 1);
+
+
+            //3. Método usando filter
+            //para utilizar esto, la lista principal debe ser un let y no un const, porque lo que se esta guardando aca es toda lo que se busca en filter, en la listaDeTareas, sino salta error al tener una const
+            listaDeTareas = listaDeTareas.filter(tarea => tarea.id != idTarea);
+
+
+            //función de eliminar
+            mostrarTareas();//re-imprimir la lista actualizada
+        }
+
+        function completarTarea(idTarea) {
+            alert("Completando tarea: " + idTarea);
+            //modificar mi lista y cambiar el booleano de true a false o de false a true
+
+            //1. buscar el elemento con el ID deseado
+            const tarea = listaDeTareas.find((t) => t.id == idTarea);
+            console.log("Tarea encontrada:", tarea);
+
+
+            //2. cambiar el valor de isCompletada
+            // if (tarea.isCompletada == true) {
+            //     tarea.isCompletada = false;
+            // } else {
+            //     tarea.isCompletada = true;
+            // } 
+            //todo esto es lo de abajo:
+            tarea.isCompletada = !tarea.isCompletada; //toggle
+            //si se quiere poner el inverso a lo que se queria tener antes, se utiliza el !, para hacer lo contrario
+
+            mostrarTareas();
+        }
+
+        // _________________________________________________________ //
+        //    4. EventListeners                                      //
+        //    ( o elementos que tengamos que refieran al event.)     //
+        // _________________________________________________________ //
+
+        //evento: escuchar cada que el formulario se envía
+        formu.addEventListener("submit", (event) => {
+            // No envíes el formulario porque quiero hacer cosas antes (ej, sea x cantidad de caracteres, que no contenga caracteres especiales, etc.)
+            event.preventDefault();
+            agregarTarea();
+        });
+
+
+        // _________________________________________________________ //
+        // 5. Inicializar nuestro programa
+        // _________________________________________________________ //
+
+        mostrarTareas();
+
+        // si eliminar y completar: hacer las funciones de eliminar y completar tarea
+
+    </script>
 </body>
 </html>
