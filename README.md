@@ -6,7 +6,7 @@
 2. Crear un header con estilos a tu gusto.
 3. En base al sistema de tareas simples hecho en casa, convertir las tareas en objetos agregando un id a cada una.
 4. Agregar una nueva opción de "isCompletada" booleana para indicar si esta completada o no.
-5.  Agregar un checkbox y un botón a cada item de la lista para marcarla como completa/incompleta
+5. Agregar un checkbox y un botón a cada item de la lista para marcarla como completa/incompleta
 6. Agregar un botón de eliminar tarea a cada tarea.
 7. Crear las funciones y métodos para cada botón.
 8. Menu: implementar lo visto en clase de Tabs para el menu

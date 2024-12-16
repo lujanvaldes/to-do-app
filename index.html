@@ -4,22 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="to do list, productivity, lista, to do" />
-    <meta name="author" content="Luján Valdés" />
-    <title>To do - App</title>
+    <title>To do List</title>
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
 
     <style>
-        /*background: fdf0d5*/
-        /*footer: 003049*/
-        /*tipografía: 780000*/
-        /*extra1: 669bbc*/
-        /*extra2: c1121f*/
-
-
-        /*estilos de base*/
-
+        /*estilos base*/
         * {
             box-sizing: border-box;
             padding: 0;
@@ -42,25 +33,194 @@
             flex-direction: column;
             align-items: center;
             gap: 1rem;
+            font-size: 1rem;
         }
 
-        .H1 {
+        .H2 {
             display: flex;
             justify-content: center;
-            font-size: 1rem;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.8rem;
             margin-top: 2rem;
+            font-weight: 500;
+            padding-bottom: 20px;
         }
 
-        /*estilos de lista*/
+
+        /*formulario*/
+
+        .Form-escribir {
+            background-color: #fff;
+            color: #c1121f;
+            padding: 0.2rem;
+            margin: 1rem;
+            width: 15rem;
+            border-radius: 1.5rem;
+            border: none;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 1px 1px 5px #8f8b8b;
+        }
+
+        .Form-btn {
+            background-color: #780000;
+            color: #fff;
+            border-radius: 1.5rem;
+            padding: 0.4rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /*lista*/
+
         .Lista {
             display: flex;
+            margin: 0.3rem;
             flex-direction: row;
-            align-items: start;
-            font-size: 1rem;
-            margin: 1rem;
+            align-items: center;
             gap: 1rem;
         }
 
+        .Lista-tareas {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+        }
+
+        .Btn-delete {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .Btn-deleteIcon {
+            font-size: 1rem;
+            color: #780000;
+            background-color: #fdf0d5;
+            border: none;
+        }
+
+        .Btn-complete {
+            border-radius: 1.0rem;
+            border: none;
+            background-color: #669bbc;
+            color: #fff;
+            font-weight: 400;
+            padding: 0.3rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .Btn-checkbox {
+            border-color: #780000;
+            background-color: #780000;
+            color: #669bbc;
+            width: 1.3rem;
+            height: 1.3rem;
+            border-radius: 50%;
+        }
+
+        .Btn-checkbox:checked {
+            width: 1.3rem;
+            height: 1.3rem;
+            border-radius: 50%;
+            color: #780000;
+        }
+
+        .Label {
+            font-size: 0.5rem;
+            line-height: 0.9rem;
+            vertical-align: middle;
+        }
+
+        /*tabs*/
+        .Tabs-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            background-color: #669bbc;
+            height: 3rem;
+            bottom: 0rem;
+            padding: 0rem 1rem;
+        }
+
+        .Tab-btn {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /*HACE QUE DESAPAREZCA HASTA QUE SE HAGA VISIBLE*/
+        .Tabs-content {
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        .Tabs-icons {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .u-active {
+            color: #fdf0d5;
+            /*PARA QUE CMABIE DE COLOR*/
+        }
+
+        .u-visible {
+            display: block;
+        }
+
+
+        /*acordeón*/
+
+        .Acordeon {
+            margin-top: 2rem;
+        }
+
+        .Acordeon-item {
+            padding: 10px;
+            border-bottom:1px solid #780000;
+            margin-bottom: 3rem;
+            margin: 1rem 1rem;
+        }
+
+        .Acordeon-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: #669bbc;
+            color: #fdf0d5;
+            width: 100%;
+
+            padding: 0.5rem;
+            font-weight: 500;
+        }
+
+        .Acordeon-content {
+            display: none;
+        }
+
+        .Acordeon-dropdown {
+            display: flex;
+            justify-content: center;
+            color: #fdf0d5;
+        }
+
+        /*activos*/
+
+        .active .Acordeon-content {
+            display: block;
+        }
+
+        .active .Acordeon-header {
+            background-color: #c1121f;
+        }
 
 
     </style>
@@ -69,38 +229,116 @@
 <body class="Body">
     <main class="Main">
 
-        <h1 class="H1">To do List</h1>
+        <div id="pagina1" class="Tabs-content">
+            <h2 class="H2">To-do</h2>
 
-        <div class="Lista">
-            <ul id="Lista-tareas">
-                <li>Ingrese tareas en su lista</li>
-            </ul>
+            <div class="Lista">
+                <ul id="listaTareasIncompletas" class="Lista-tareas">
+                </ul>
+            </div>
+
+            <form id="formTarea">
+                <input id="txtTarea" type="text" name="tuNuevaTarea" placeholder="Ingrese una tarea"
+                    class="Form-escribir">
+                <button type="submit" class="Form-btn">Agregar</button>
+            </form>
         </div>
 
-        <form id="formTarea">
-            <input id="txtTarea" type="text" name="" placeholder="Ingrese una tarea">
-            <button type="submit">Agregar Tarea</button>
-        </form>
+
+        <div id="pagina2" class="Tabs-content u-active">
+            <h2 class="H2">All To-do List</h2>
+
+            <div class="Lista">
+                <ul id="listaTareas" class="Lista-tareas">
+                </ul>
+            </div>
+
+            <form id="formTarea">
+                <input id="txtTarea" type="text" name="tuNuevaTarea" placeholder="Ingrese una tarea"
+                    class="Form-escribir">
+                <button type="submit" class="Form-btn">Agregar</button>
+            </form>
+        </div>
+
+
+        <div id="pagina3" class="Tabs-content">
+            <h2 class="H2">Profile</h2>
+            <div class="Acordeon">
+                <div class="Acordeon-item active">
+                    <div class="Acordeon-header">
+                        Monday
+                        <span class="material-symbols-outlined Acordeon-dropdown">
+                            arrow_drop_down
+                        </span>
+                    </div>
+
+                    <div class="Acordeon-content">
+                        Meta: Realizar todos los resumenes del módulo.
+                    </div>
+                </div>
+
+                <div class="Acordeon-item">
+                    <div class="Acordeon-header">
+                        Tuesday
+                        <span class="material-symbols-outlined Acordeon-dropdown">
+                            arrow_drop_down
+                        </span>
+                    </div>
+
+                    <div class="Acordeon-content">
+                        Meta: Avanzar proyecto final.
+                    </div>
+                </div>
+
+                <div class="Acordeon-item">
+                    <div class="Acordeon-header">
+                        Wednesday
+                        <span class="material-symbols-outlined Acordeon-dropdown">
+                            arrow_drop_down
+                        </span>
+                    </div>
+
+                    <div class="Acordeon-content">
+                        Meta: Buscar inspiración en internet.
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <menu class="Tabs">
+        <ul class="Tabs-buttons">
+            <li data-tab="pagina1" class="Tabs-btn">
+                <span class="material-symbols-outlined Tabs-icons">
+                    list
+                </span>
+            </li>
 
+            <li data-tab="pagina2" class="Tabs-button u-active">
+                <span class="material-symbols-outlined Tabs-icons">
+                    task_alt
+                </span>
+            </li>
 
+            <li data-tab="pagina3" class="Tabs-btn">
+                <span class="material-symbols-outlined Tabs-icons">
+                    person
+                </span>
+            </li>
+        </ul>
     </menu>
 
-    <script>
 
-        //recomendado para el proyecto: segmentarlo correctamente
+    <script>
         // _________________________________________________________ //
-        //  0. Comentarios y documentación
+        //  0. Comentarios y documentación                           //
         //  (si se quiere describir todo lo que va a hacer el js)    //
         // _________________________________________________________ //
-
         /*
-        Vamos a realizar un ToDo list para practicar el uso de objetos y arrrays
-        ej de uso:
-        link a manual
-        autor
+
+        Realizamos un To do list para practicar el uso de objetos y arrrays.
+        La navegación se piensa teniendo en cuenta la parte del footer, donde se verán las secciones de To-do, Todos, Perfil, el cual se trabaja con JavaScript para que funcione a modo de Tabs (pestañas).
+            
         */
 
         // _________________________________________________________ //
@@ -111,30 +349,27 @@
         //constantes (que nunca van a cambiar)
         const formu = document.getElementById("formTarea");
         const txtTarea = document.getElementById("txtTarea");
-        const boxTareas = document.getElementById("Lista-tareas");
-
-        //variables (los que si cambian) (al ser un array va entre corchetes)
-        //const listaDeTareas = ["Ordenar el código JS", "Crear las funciones", "Probar el programa"];
-
-        /*      const tarea = {
-                           id: 1,//identificador unico para cuando hay muchas personas que tienen indices 0, 1, 2... hay que diferenciarlos de otra manera
-                           titulo: "Ordenar el código de JS",
-                           //isImportant: true,
-                           isCompletada: true,
-               
-                       }*/
+        const boxTareas = document.getElementById("listaTareas");
 
         let listaDeTareas = [
             { id: 1, titulo: "Ordenar el código de JS", isCompletada: true },
-            { id: 524, titulo: "Crear las Funciones", isCompletada: false },
-            { id: 1056, titulo: "Probar el programa", isCompletada: false }
+            { id: 2, titulo: "Crear las Funciones", isCompletada: true },
+            { id: 3, titulo: "Probar el programa", isCompletada: false },
+            { id: 4, titulo: "Añadir estilos", isCompletada: false },
         ];
 
+        //tabs
+        const listaBotones = document.querySelectorAll(".Tabs-btn");
+        const listaPaginas = document.querySelectorAll(".Tabs-content");
+
+        //acordeón
+        const headers = document.querySelectorAll(".Acordeon-header");
+        const items = document.querySelectorAll(".Acordeon-item");
 
         // ___________________________________________________________ //
         // 2. Funciones utilitarias (reutilizables)                    //
-        // * esto también se suele hacer en un archivo aparte: utils.js//
         // ___________________________________________________________ //
+
 
 
         // _________________________________________________________ //
@@ -146,99 +381,120 @@
             //borrar todo el contenido de la caja antes de mostrar
             boxTareas.innerHTML = ""; //borro los elementos
 
-            //lista de cosas ---->(cosa)
+            //cargar las nuevas tareas
             listaDeTareas.forEach((tarea) => {
                 console.log("Tarea es: ", tarea);
+
                 const titulo = tarea.titulo;
                 const id = tarea.id;
 
-                //convertir esta linea para que isChecked sea igual a "checked" o a nada
-                const isChecked = tarea.isCompletada ? "checked" : ""; //if ternario, si es true, es = a la primera, sino, lo segundo
+                //convertir esta linea para que isChecked sea igual a "checked" o a nada ""
+                const isChecked = tarea.isCompletada ? "checked" : "";
 
-
-
-                //boxTareas.innerHTML += `<li>${titulo}</li>`;
                 boxTareas.innerHTML += `
-                <li>
-                    <input type="checkbox" id="${id}"name= "chk_completada" ${isChecked}/>
-                    <label for="${id}">${titulo}(${id})</label>
-                    <button onclick="eliminarTarea(${id})">X</button>
-                    <button onclick="completarTarea(${id})">Completar</button>
+                <li class="Lista">
+                    <input type="checkbox" id="${id}" name="chk_completada" class="Btn-checkbox" ${isChecked}/>
+
+                    <label for="${id}">${titulo}</label>
+
+                    <button onclick="eliminarTarea(${id})" id= deleteBtn class="Btn-deleteIcon"><span class="material-symbols-outlined">delete</span></button>
+                    <button onclick="completarTarea(${id})" class="Btn-complete">Completar</button>
                 </li>`;
             });
+            mostrarTareasIncompletas();
         }
 
+        /*AGREGAR TAREA*/
         function agregarTarea() {
-            const nuevaTarea = txtTarea.value.trim();//el texto del input
+            const txtTarea =document.getElementById ("txtTarea");
+            const nuevaTarea = txtTarea.value.trim();//para obtener el texto del input y quitar espacios
+
+            console.log(nuevaTarea);
 
             //tarea invalida (hacemos un return)
-            if (nuevaTarea == "") {
+            if (nuevaTarea === "") {
                 alert("Por favor, ingresar una tarea válida");
                 return;
             }
 
             // tarea válida
-            txtTarea.value = "";//limpiar el imput
-            // listaDeTareas.push(nuevaTarea); //este método push() empuja el nuevo elemento al final de la lista.
+            txtTarea.value = "";//limpiar el imput (agregar una ta)
+
 
             //simulamos un id nuevo entre 0 y 99
             const nuevoID = parseInt(Math.random() * 100);
 
-            const objetoTarea = { id: nuevoID, titulo: nuevaTarea, isCompletada: false }; // se lo agrega en una variable, y luego hacer el push de la misma
-            console.log("Nueva tarea a agregar es: ", objetoTarea);
-
+            const objetoTarea = { 
+                id: nuevoID, 
+                titulo: nuevaTarea, 
+                isCompletada: false, 
+            };
+            // se lo agrega en una variable, y luego hacer el push de la misma
             listaDeTareas.push(objetoTarea);
 
+            //actualizar las tareas
             mostrarTareas();
+            mostrarTareasIncompletas();
         }
 
         function eliminarTarea(idTarea) {
-            alert("Eliminar tarea: " + idTarea);
-            //modificar mi lista, y eliminar la tarea idTarea
 
-            // 1. metodo utilizando forEach y splice
-            // listaDeTareas.forEach((tarea, index)=>{
-            //     if(tarea.id == idTarea) {
-            //         listaDeTareas.splice(index, 1);
-            //     }
-            // });
+            listaDeTareas = listaDeTareas.filter((tarea) => tarea.id != idTarea);
 
-
-            //2. método utilizando findIndex
-            //busca una tarea donde se esta buscando, y devuelve la posicion en la que esta en la lista.
-            // const posicion = listaDeTareas.findIndex(tarea => tarea.id == idTarea);
-            // listaDeTareas.splice(posicion, 1);
-
-
-            //3. Método usando filter
-            //para utilizar esto, la lista principal debe ser un let y no un const, porque lo que se esta guardando aca es toda lo que se busca en filter, en la listaDeTareas, sino salta error al tener una const
-            listaDeTareas = listaDeTareas.filter(tarea => tarea.id != idTarea);
-
-
-            //función de eliminar
             mostrarTareas();//re-imprimir la lista actualizada
         }
 
         function completarTarea(idTarea) {
-            alert("Completando tarea: " + idTarea);
-            //modificar mi lista y cambiar el booleano de true a false o de false a true
-
             //1. buscar el elemento con el ID deseado
             const tarea = listaDeTareas.find((t) => t.id == idTarea);
             console.log("Tarea encontrada:", tarea);
 
-
             //2. cambiar el valor de isCompletada
-            // if (tarea.isCompletada == true) {
-            //     tarea.isCompletada = false;
-            // } else {
-            //     tarea.isCompletada = true;
-            // } 
-            //todo esto es lo de abajo:
-            tarea.isCompletada = !tarea.isCompletada; //toggle
-            //si se quiere poner el inverso a lo que se queria tener antes, se utiliza el !, para hacer lo contrario
+            if (tarea.isCompletada == true) {
+            tarea.isCompletada = false;
+            } else {
+            tarea.isCompletada = true;
+            } 
 
             mostrarTareas();
+        }
+
+        function filtroTareasIncompletas(){
+            const tareasIncompletas = listaDeTareas.filter ((tarea)=> !tarea.isCompletada);
+            return tareasIncompletas;
+        }
+
+        function mostrarTareasIncompletas(){
+            const tareasIncompletas = filtroTareasIncompletas();
+            const conteinerIncompletas = document.getElementById("listaTareasIncompletas");
+
+            conteinerIncompletas.innerHTML ="";
+
+            //recorre tareas incompletas y las muestra en pantalla
+            tareasIncompletas.forEach((tarea)=>{
+                const titulo = tarea.titulo;
+                const id = tarea.id;
+
+                conteinerIncompletas.innerHTML +=`
+                <li class=lista>
+                    <input type="checkbox" id="${id}" class="Btn-checkbox"/>
+                    <label class="Label" for="${id}"> (${id}) ${titulo}</label>
+                    <button onclick="completarTarea(${id})" class="Btn-completada">Completada</button>
+                    <button onclick="eliminarTarea(${id})" class="Btn-delete">
+                        <span class="symbols Tabs-icons">eliminar</span>
+                    </button>
+                </li>`
+            });
+        }
+
+        //primero muestra la pestaña activa y luego oculta las demás páginas
+        function quitarClases(){
+            listaBotones.forEach((item)=>{
+                item.classList.remove("u-active");
+            });
+            listaPaginas.forEach((pagina)=>{
+                pagina.classList.remove("u-visible");
+            });
         }
 
         // _________________________________________________________ //
@@ -248,10 +504,37 @@
 
         //evento: escuchar cada que el formulario se envía
         formu.addEventListener("submit", (event) => {
-            // No envíes el formulario porque quiero hacer cosas antes (ej, sea x cantidad de caracteres, que no contenga caracteres especiales, etc.)
+            // No envíes el formulario porque quiero hacer cosas antes
             event.preventDefault();
             agregarTarea();
         });
+
+        //tabs-menu
+        listaBotones.forEach((boton)=>{
+            boton.addEventListener("click", ()=>{
+                const targetId = boton.dataset.tab;
+                const target = document.getElementById(targetId);
+
+                quitarClases();
+                target.classList.add("u-visible");
+                boton.classList.add("u-active");
+
+                //pestaña to-do list (tareas incompletas)
+                if (targetId === "pagina1"){
+                    mostrarTareasIncompletas();
+                }
+            });
+        });
+
+        headers.forEach((header) =>{
+            header.addEventListener("click", ()=> {
+                const item = header.closest(".Acordeon-item");
+
+                //item-active
+                item.classList.toggle("active");
+            });
+        });
+
 
 
         // _________________________________________________________ //
@@ -259,9 +542,10 @@
         // _________________________________________________________ //
 
         mostrarTareas();
-
-        // si eliminar y completar: hacer las funciones de eliminar y completar tarea
+        listaBotones[1].click();
+        headers[0].click();
 
     </script>
 </body>
+
 </html>
