@@ -46,6 +46,13 @@
             padding-bottom: 20px;
         }
 
+        .Header {
+            display: flex;
+            flex-direction: row;
+            background-color: #780000;
+            width: 100%;
+            height: 3rem;
+        }
 
         /*formulario*/
 
@@ -87,6 +94,8 @@
             flex-direction: column;
             align-content: center;
         }
+
+        
 
         .Btn-delete {
             display: flex;
@@ -131,7 +140,7 @@
         }
 
         .Label {
-            font-size: 0.5rem;
+            font-size: 1rem;
             line-height: 0.9rem;
             vertical-align: middle;
         }
@@ -155,8 +164,8 @@
             flex-direction: column;
         }
 
-        .Tabs-btn.u-active{
-            color: #fdf0d5 ¡important!;
+        .Tabs-btn.u-active {
+            color: #fdf0d5 ¡important !;
         }
 
         /*HACE QUE DESAPAREZCA HASTA QUE SE HAGA VISIBLE*/
@@ -165,8 +174,6 @@
             align-items: center;
             display: none;
         }
-
-
 
         .Tabs-icons {
             font-size: 1.5rem;
@@ -187,6 +194,7 @@
 
         .Acordeon {
             margin-top: 2rem;
+            width: 400px;
         }
 
         .Acordeon-item {
@@ -232,8 +240,10 @@
 
 <body class="Body">
     <main class="Main">
+        <header class="Header">
 
-        <div id="pagina1" class="Tabs-content">
+        </header>
+<div id="pagina1" class="Tabs-content">
             <h2 class="H2">To-do</h2>
 
             <div class="Lista">
@@ -249,7 +259,7 @@
         </div>
 
 
-        <div id="pagina2" class="Tabs-content u-visible u-active">
+        <div id="pagina2" class="Tabs-content">
             <h2 class="H2">All To-do List</h2>
 
             <div class="Lista">
@@ -303,11 +313,14 @@
                     </div>
 
                     <div class="Acordeon-content">
-                        Meta: Buscar inspiración en internet.
+                        Meta: Buscar inspiración.
                     </div>
                 </div>
             </div>
         </div>
+
+      
+        
     </main>
 
     <menu class="Tabs">
@@ -318,7 +331,7 @@
                 </span>
             </li>
 
-            <li data-tab="pagina2" class="Tabs-button u-active">
+            <li data-tab="pagina2" class="Tabs-btn u-active">
                 <span class="material-symbols-outlined Tabs-icons">
                     task_alt
                 </span>
@@ -350,7 +363,7 @@
         // _________________________________________________________ //
         //guardan informacion y hacen referencia a partes del html//
 
-        //constantes (que nunca van a cambiar)
+        //constantes
         const formu = document.getElementById("formTarea");
         const txtTarea = document.getElementById("txtTarea");
         const boxTareas = document.getElementById("listaTareas");
@@ -370,7 +383,7 @@
         const headers = document.querySelectorAll(".Acordeon-header");
         const items = document.querySelectorAll(".Acordeon-item");
 
-        // ___________________________________________________________ //
+        //___________________________________________________________ //
         // 2. Funciones utilitarias (reutilizables)                    //
         // ___________________________________________________________ //
 
@@ -382,8 +395,8 @@
         // _________________________________________________________ //
 
         function mostrarTareas() {
-            //borrar todo el contenido de la caja antes de mostrar
-            boxTareas.innerHTML = ""; //borro los elementos
+            //borra todo el contenido de la caja antes de mostrar
+            boxTareas.innerHTML = ""; 
 
             //cargar las nuevas tareas
             listaDeTareas.forEach((tarea) => {
@@ -392,7 +405,6 @@
                 const titulo = tarea.titulo;
                 const id = tarea.id;
 
-                //convertir esta linea para que isChecked sea igual a "checked" o a nada ""
                 const isChecked = tarea.isCompletada ? "checked" : "";
 
                 boxTareas.innerHTML += `
@@ -405,10 +417,10 @@
                     <button onclick="completarTarea(${id})" class="Btn-complete">Completar</button>
                 </li>`;
             });
-            mostrarTareasIncompletas();
+
         }
 
-        /*AGREGAR TAREA*/
+        /*agregar tarea*/
         function agregarTarea() {
             const txtTarea = document.getElementById("txtTarea");
             const nuevaTarea = txtTarea.value.trim();//para obtener el texto del input y quitar espacios
@@ -421,8 +433,8 @@
                 return;
             }
 
-            // tarea válida
-            txtTarea.value = "";//limpiar el imput (agregar una ta)
+            //tarea válida
+            txtTarea.value = "";//limpiar el imput
 
 
             //simulamos un id nuevo entre 0 y 99
@@ -480,13 +492,14 @@
                 const id = tarea.id;
 
                 conteinerIncompletas.innerHTML += `
-                <li class=lista>
-                    <input type="checkbox" id="${id}" class="Btn-checkbox"/>
-                    <label class="Label" for="${id}"> (${id}) ${titulo}</label>
-                    <button onclick="completarTarea(${id})" class="Btn-completada">Completada</button>
-                    <button onclick="eliminarTarea(${id})" class="Btn-delete">
-                        <span class="symbols Tabs-icons">eliminar</span>
-                    </button>
+                <li class=Lista>
+                    <input type="checkbox" id="${id}" name= "chk_completada" class="Btn-checkbox"/>
+
+                    <label class="Label" for="${id}">${titulo}</label>
+
+                    <button onclick="eliminarTarea(${id})" id=deleteBtn class="Btn-deleteIcon"><span class="material-symbols-outlined">delete</span></button>
+                    <button onclick="completarTarea(${id})" class="Btn-complete">Completar</button>
+                    
                 </li>`
             });
         }
@@ -513,22 +526,6 @@
             agregarTarea();
         });
 
-        //tabs-menu
-        /*listaBotones.forEach((boton)=>{
-            boton.addEventListener("click", ()=>{
-                const targetId = boton.dataset.tab;
-                const target = document.getElementById(targetId);
-
-                quitarClases();
-                target.classList.add("u-visible");
-                boton.classList.add("u-active");
-
-                //pestaña to-do list (tareas incompletas)
-                if (targetId === "pagina1"){
-                    mostrarTareasIncompletas();
-                }
-            });
-        });*/
 
         listaBotones.forEach((boton) => {
             boton.addEventListener("click", () => {
