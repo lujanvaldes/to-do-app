@@ -456,6 +456,9 @@
         function eliminarTarea(idTarea) {
 
             listaDeTareas = listaDeTareas.filter((tarea) => tarea.id != idTarea);
+            //filtra todas las tareas excepto la que se quiere borrar (diferente a idTarea)
+            //inverso al find
+
 
             mostrarTareas();//re-imprimir la lista actualizada
         }
