@@ -150,9 +150,13 @@
             padding: 0rem 1rem;
         }
 
-        .Tab-btn {
+        .Tabs-btn {
             display: flex;
             flex-direction: column;
+        }
+
+        .Tabs-btn.u-active{
+            color: #fdf0d5 ¡important!;
         }
 
         /*HACE QUE DESAPAREZCA HASTA QUE SE HAGA VISIBLE*/
@@ -162,6 +166,8 @@
             display: none;
         }
 
+
+
         .Tabs-icons {
             font-size: 1.5rem;
             cursor: pointer;
@@ -169,7 +175,7 @@
 
         .u-active {
             color: #fdf0d5;
-            /*PARA QUE CMABIE DE COLOR*/
+            /*PARA QUE CAMBIE DE COLOR*/
         }
 
         .u-visible {
@@ -185,7 +191,7 @@
 
         .Acordeon-item {
             padding: 10px;
-            border-bottom:1px solid #780000;
+            border-bottom: 1px solid #780000;
             margin-bottom: 3rem;
             margin: 1rem 1rem;
         }
@@ -221,8 +227,6 @@
         .active .Acordeon-header {
             background-color: #c1121f;
         }
-
-
     </style>
 </head>
 
@@ -245,7 +249,7 @@
         </div>
 
 
-        <div id="pagina2" class="Tabs-content u-active">
+        <div id="pagina2" class="Tabs-content u-visible u-active">
             <h2 class="H2">All To-do List</h2>
 
             <div class="Lista">
@@ -406,7 +410,7 @@
 
         /*AGREGAR TAREA*/
         function agregarTarea() {
-            const txtTarea =document.getElementById ("txtTarea");
+            const txtTarea = document.getElementById("txtTarea");
             const nuevaTarea = txtTarea.value.trim();//para obtener el texto del input y quitar espacios
 
             console.log(nuevaTarea);
@@ -424,10 +428,10 @@
             //simulamos un id nuevo entre 0 y 99
             const nuevoID = parseInt(Math.random() * 100);
 
-            const objetoTarea = { 
-                id: nuevoID, 
-                titulo: nuevaTarea, 
-                isCompletada: false, 
+            const objetoTarea = {
+                id: nuevoID,
+                titulo: nuevaTarea,
+                isCompletada: false,
             };
             // se lo agrega en una variable, y luego hacer el push de la misma
             listaDeTareas.push(objetoTarea);
@@ -451,31 +455,31 @@
 
             //2. cambiar el valor de isCompletada
             if (tarea.isCompletada == true) {
-            tarea.isCompletada = false;
+                tarea.isCompletada = false;
             } else {
-            tarea.isCompletada = true;
-            } 
+                tarea.isCompletada = true;
+            }
 
             mostrarTareas();
         }
 
-        function filtroTareasIncompletas(){
-            const tareasIncompletas = listaDeTareas.filter ((tarea)=> !tarea.isCompletada);
+        function filtroTareasIncompletas() {
+            const tareasIncompletas = listaDeTareas.filter((tarea) => !tarea.isCompletada);
             return tareasIncompletas;
         }
 
-        function mostrarTareasIncompletas(){
+        function mostrarTareasIncompletas() {
             const tareasIncompletas = filtroTareasIncompletas();
             const conteinerIncompletas = document.getElementById("listaTareasIncompletas");
 
-            conteinerIncompletas.innerHTML ="";
+            conteinerIncompletas.innerHTML = "";
 
             //recorre tareas incompletas y las muestra en pantalla
-            tareasIncompletas.forEach((tarea)=>{
+            tareasIncompletas.forEach((tarea) => {
                 const titulo = tarea.titulo;
                 const id = tarea.id;
 
-                conteinerIncompletas.innerHTML +=`
+                conteinerIncompletas.innerHTML += `
                 <li class=lista>
                     <input type="checkbox" id="${id}" class="Btn-checkbox"/>
                     <label class="Label" for="${id}"> (${id}) ${titulo}</label>
@@ -488,11 +492,11 @@
         }
 
         //primero muestra la pestaña activa y luego oculta las demás páginas
-        function quitarClases(){
-            listaBotones.forEach((item)=>{
+        function quitarClases() {
+            listaBotones.forEach((item) => {
                 item.classList.remove("u-active");
             });
-            listaPaginas.forEach((pagina)=>{
+            listaPaginas.forEach((pagina) => {
                 pagina.classList.remove("u-visible");
             });
         }
@@ -510,7 +514,7 @@
         });
 
         //tabs-menu
-        listaBotones.forEach((boton)=>{
+        /*listaBotones.forEach((boton)=>{
             boton.addEventListener("click", ()=>{
                 const targetId = boton.dataset.tab;
                 const target = document.getElementById(targetId);
@@ -524,10 +528,29 @@
                     mostrarTareasIncompletas();
                 }
             });
+        });*/
+
+        listaBotones.forEach((boton) => {
+            boton.addEventListener("click", () => {
+                // 1. Eliminar clases 'u-visible' y 'u-active' de todas las pestañas y páginas
+                listaBotones.forEach(b => b.classList.remove("u-active"));
+                listaPaginas.forEach(p => p.classList.remove("u-visible"));
+
+                // 2. Añadir clases 'u-visible' y 'u-active' solo al botón y a la página seleccionada
+                boton.classList.add("u-active");
+                const targetId = boton.dataset.tab;
+                document.getElementById(targetId).classList.add("u-visible");
+
+                // 3. Mostrar tareas incompletas si estamos en "pagina1"
+                if (targetId === "pagina1") {
+                    mostrarTareasIncompletas();
+                }
+            });
         });
 
-        headers.forEach((header) =>{
-            header.addEventListener("click", ()=> {
+
+        headers.forEach((header) => {
+            header.addEventListener("click", () => {
                 const item = header.closest(".Acordeon-item");
 
                 //item-active
