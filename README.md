@@ -12,3 +12,4 @@
 8. Menu: implementar lo visto en clase de Tabs para el menu
 9. Perfil: implementar lo visto en clase de Acordeón para crear un Perfil
 10. En Pendientes solo mostrar la lista de tareas sin hacer, y en Todas mostrar ambas, completadas y no completadas.
+

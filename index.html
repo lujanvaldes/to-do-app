@@ -43,7 +43,7 @@
             font-size: 1.8rem;
             margin-top: 2rem;
             font-weight: 500;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
         }
 
         .Header {
@@ -52,6 +52,15 @@
             background-color: #780000;
             width: 100%;
             height: 3rem;
+        }
+
+        .P {
+            display: flex;
+            justify-content: center;
+            font-style: italic;
+            font-weight: 600;
+            color: #780000;
+            padding-bottom: 10px;
         }
 
         /*formulario*/
@@ -95,7 +104,6 @@
             align-content: center;
         }
 
-        
 
         .Btn-delete {
             display: flex;
@@ -110,6 +118,7 @@
             color: #780000;
             background-color: #fdf0d5;
             border: none;
+            cursor: pointer;
         }
 
         .Btn-complete {
@@ -137,6 +146,7 @@
             height: 1.3rem;
             border-radius: 50%;
             color: #780000;
+
         }
 
         .Label {
@@ -145,7 +155,15 @@
             vertical-align: middle;
         }
 
+        /*AÑADIDO para tachar los completados*/
+        .Btn-checkbox:checked + .Label {
+            text-decoration: line-through;
+        }
+
+
         /*tabs*/
+
+
         .Tabs-buttons {
             display: flex;
             flex-direction: row;
@@ -201,7 +219,7 @@
             padding: 10px;
             border-bottom: 1px solid #780000;
             margin-bottom: 3rem;
-            margin: 1rem 1rem;
+            margin: 0rem 1rem;
         }
 
         .Acordeon-header {
@@ -243,15 +261,17 @@
         <header class="Header">
 
         </header>
-<div id="pagina1" class="Tabs-content">
+        <!--PÁGINA 1-->
+        <div id="pagina1" class="Tabs-content">
             <h2 class="H2">To-do</h2>
+            <p class="P">Añade nuevas tareas que quieras realizar.</p>
 
             <div class="Lista">
                 <ul id="listaTareasIncompletas" class="Lista-tareas">
                 </ul>
             </div>
 
-            <form id="formTarea">
+            <form id="formTarea" class="Form">
                 <input id="txtTarea" type="text" name="tuNuevaTarea" placeholder="Ingrese una tarea"
                     class="Form-escribir">
                 <button type="submit" class="Form-btn">Agregar</button>
@@ -259,24 +279,24 @@
         </div>
 
 
+        <!--PÁGINA 2-->
         <div id="pagina2" class="Tabs-content">
             <h2 class="H2">All To-do List</h2>
+            <p class="P">Todas tus tareas.</p>
 
             <div class="Lista">
                 <ul id="listaTareas" class="Lista-tareas">
                 </ul>
             </div>
 
-            <form id="formTarea">
-                <input id="txtTarea" type="text" name="tuNuevaTarea" placeholder="Ingrese una tarea"
-                    class="Form-escribir">
-                <button type="submit" class="Form-btn">Agregar</button>
-            </form>
+              <!-- Para que tenga más sentido la app, solo se añadirían tareas nuevas en To-Do, y en All to-do se visualizarían todas-->
+           
         </div>
 
-
+        <!--PÁGINA 3-->
         <div id="pagina3" class="Tabs-content">
             <h2 class="H2">Profile</h2>
+            <p class="P">Acá verás tus objetivos para el resto de la semana.</p>
             <div class="Acordeon">
                 <div class="Acordeon-item active">
                     <div class="Acordeon-header">
@@ -319,8 +339,8 @@
             </div>
         </div>
 
-      
-        
+
+
     </main>
 
     <menu class="Tabs">
@@ -372,7 +392,7 @@
             { id: 1, titulo: "Ordenar el código de JS", isCompletada: true },
             { id: 2, titulo: "Crear las Funciones", isCompletada: true },
             { id: 3, titulo: "Probar el programa", isCompletada: false },
-            { id: 4, titulo: "Añadir estilos", isCompletada: false },
+           // { id: 4, titulo: "Añadir estilos", isCompletada: false },
         ];
 
         //tabs
@@ -396,7 +416,7 @@
 
         function mostrarTareas() {
             //borra todo el contenido de la caja antes de mostrar
-            boxTareas.innerHTML = ""; 
+            boxTareas.innerHTML = "";
 
             //cargar las nuevas tareas
             listaDeTareas.forEach((tarea) => {
@@ -405,25 +425,30 @@
                 const titulo = tarea.titulo;
                 const id = tarea.id;
 
+                //isChecked sea igual a "checked" o a "" dependiendo de si está completada o no
                 const isChecked = tarea.isCompletada ? "checked" : "";
 
                 boxTareas.innerHTML += `
                 <li class="Lista">
                     <input type="checkbox" id="${id}" name="chk_completada" class="Btn-checkbox" ${isChecked}/>
 
-                    <label for="${id}">${titulo}</label>
+                    <label class="Label" for="${id}">${titulo}</label>
 
-                    <button onclick="eliminarTarea(${id})" id= deleteBtn class="Btn-deleteIcon"><span class="material-symbols-outlined">delete</span></button>
+                    <button onclick="eliminarTarea(${id})" id=deleteBtn class="Btn-deleteIcon">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+
                     <button onclick="completarTarea(${id})" class="Btn-complete">Completar</button>
                 </li>`;
             });
+            mostrarTareasIncompletas();
 
         }
 
         /*agregar tarea*/
         function agregarTarea() {
             const txtTarea = document.getElementById("txtTarea");
-            const nuevaTarea = txtTarea.value.trim();//para obtener el texto del input y quitar espacios
+            const nuevaTarea = txtTarea.value.trim();//para obtener el texto del input y quitar espacios que no se necesiten (trim)
 
             console.log(nuevaTarea);
 
@@ -450,6 +475,7 @@
 
             //actualizar las tareas
             mostrarTareas();
+
             mostrarTareasIncompletas();
         }
 
